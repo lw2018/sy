@@ -1,14 +1,17 @@
 #--coding:utf-8--
-from SendFirst import SendFirstPage,SendSecondPage
-import time 
+import time
+
+from SendFirst import SendFirstPage, SendSecondPage
+
 #发送首营第一步页面
 
 class SendFirstLinkParameters:
 
-    def set_values(self,all_url,unexchanged_url,file_kinds=1):
+    def set_values(self,all_url,unexchanged_url,headers,file_kinds=1):
         self.file_kinds = file_kinds
         self.all_url = all_url
         self.unexchanged_url = unexchanged_url
+        self.headers = headers
 
 
 class SendFirstLink:
@@ -16,7 +19,7 @@ class SendFirstLink:
         self.file_kinds = sendFirstLinkParameters.file_kinds
         self.all_url = sendFirstLinkParameters.all_url
         self.unexchanged_url = sendFirstLinkParameters.unexchanged_url
-
+        self.headers = headers = sendFirstLinkParameters.headers
     def execute_page(self,driver,target_company,target_name,cook):
         time.sleep(1)
         sendFirst = SendFirstPage(driver)
@@ -28,8 +31,5 @@ class SendFirstLink:
 
         receive_company_data = sendFirst.receive_company_data
         print('data',receive_company_data)
-        send_SecondPage = SendSecondPage(driver,cook,receive_company_data)
+        send_SecondPage = SendSecondPage(driver,cook,receive_company_data,self.headers)
         send_SecondPage.second(self.all_url,self.unexchanged_url,target_name)
-
-
-

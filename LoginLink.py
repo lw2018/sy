@@ -22,6 +22,7 @@ class LoginLink:
         loginpage=Loginpage(driver,self.url,self.username,self.password,self.verify_code)
         loginpage.logined()
         
+        self.jar = loginpage.handle_cook()
 
     def get_cook(self):
         pass

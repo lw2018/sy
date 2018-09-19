@@ -1,5 +1,7 @@
-from selenium import webdriver
 import time
+
+from selenium import webdriver
+
 
 class HomePage:
     def __init__(self,driver,one_left_menus):
@@ -25,4 +27,3 @@ class HomePage:
             self.driver.find_element_by_xpath("//*[@id='layui-layer1']/span[1]/a").click()
             print("提示")
         time.sleep(3)
-        

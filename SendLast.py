@@ -1,14 +1,14 @@
 #--coding:utf-8--
-from selenium.common.exceptions import StaleElementReferenceException
 import time
+
+from selenium.common.exceptions import StaleElementReferenceException
+
 
 class SendLastPage:
     def __init__(self,driver):
         self.driver = driver
     
     def lastPage_StaticElements(self):
-        #委托书
-        #self.upload_proxy_tag=self.driver.find_element_by_id('upload-layer')
         #发送按钮
         self.send_button=self.driver.find_element_by_id('comfirm-submit')
 
@@ -45,36 +45,36 @@ class SendLastPage:
         main_company_documents = self.matched_main_company_documents + self.unmatched_main_company_documents
         sub_company_documents = self.matched_sub_company_documents + self.unmatched_sub_company_documents
         #所有要发送的品种+企业资料
-        all_send_document=[]
-        all_send_document.append(product_documents[0:2])
-        all_send_document.append(main_company_documents[0:2])
-        all_send_document.append(sub_company_documents[0:2])
+        all_send_documents=[]
+        all_send_documents.append(product_documents[0:2])
+        all_send_documents.append(main_company_documents[0:2])
+        all_send_documents.append(sub_company_documents[0:2])
         ##删除所有要发送资料其中的空资料
-        while [] in all_send_document:
-            all_send_document.remove([])
-        self.all_send_document = all_send_document
+        while [] in all_send_documents:
+            all_send_documents.remove([])
+        self.all_send_documents = all_send_documents
 
-        all_send_documents_lenList=[]
-        for documents_list in all_send_document:
-            all_send_documents_lenList.append(len(documents_list))
-        self.all_send_documents_lenList = all_send_documents_lenList
-        print("要发送的各排文件的长度",self.all_send_documents_lenList)
+        all_send_documents_len=[]
+        for documents_list in all_send_documents:
+            all_send_documents_len.append(len(documents_list))
+        self.all_send_documents_len = all_send_documents_len
+        print("要发送的各排文件的长度",self.all_send_documents_len)
 
         #所有的不发送品种和企业资料
-        all_unsend_document=[]
-        all_unsend_document.append(product_documents[2:len(product_documents)])
-        all_unsend_document.append(main_company_documents[2:len(main_company_documents)])
-        all_unsend_document.append(sub_company_documents[2:len(sub_company_documents)])
+        all_unsend_documents=[]
+        all_unsend_documents.append(product_documents[2:len(product_documents)])
+        all_unsend_documents.append(main_company_documents[2:len(main_company_documents)])
+        all_unsend_documents.append(sub_company_documents[2:len(sub_company_documents)])
         ##删除所有资料其中的空资料
-        while [] in all_unsend_document:
-            all_unsend_document.remove([])
-        self.all_unsend_document = all_unsend_document
+        while [] in all_unsend_documents:
+            all_unsend_documents.remove([])
+        self.all_unsend_documents = all_unsend_documents
 
-        all_unsend_documents_lenList=[]
-        for documents_list in all_unsend_document:
-            all_unsend_documents_lenList.append(len(documents_list))
-        self.all_unsend_documents_lenList = all_unsend_documents_lenList
-        print("不发送的各排文件的长度",self.all_unsend_documents_lenList)
+        all_unsend_documents_len=[]
+        for documents_list in all_unsend_documents:
+            all_unsend_documents_len.append(len(documents_list))
+        self.all_unsend_documents_len = all_unsend_documents_len
+        print("不发送的各排文件的长度",self.all_unsend_documents_len)
 
 
     def upload_proxy(self):         #基于大页面具体的小页面 函数命名不够直白 继续改
@@ -96,11 +96,11 @@ class SendLastPage:
     def upload_none_proxy(self):
         self.get_data()
         #要发送的
-        for j in range(len(self.all_send_document)):
+        for j in range(len(self.all_send_documents)):
         #for company_or_product_documents in all_document:
             #current_documents=company_or_product_documents
             #for i in range(2):
-            for i in range(self.all_send_documents_lenList[j]):
+            for i in range(self.all_send_documents_len[j]):
             
                 attempts=0
                 while attempts<2:
@@ -108,14 +108,14 @@ class SendLastPage:
                     self.get_data()
                     print('j:',j)
                     print("i:",i)
-                    current_ducument=self.all_send_document[j][i]
+                    current_ducument=self.all_send_documents[j][i]
                     
                     
                     try:
                         current_ducument.click()  #单个文件夹点击展开
                                 ##全选框的处理 让任何文件都没有处于选中状态
                         time.sleep(1)
-                        print(888)
+                        print("step3单个文件夹定位完毕 且已点开")
                         
                         self.document_DynamicElements()
                         is_select = self.all_checkbox_input.is_selected()
@@ -145,7 +145,7 @@ class SendLastPage:
                             
                         time.sleep(1)
                         self.select_ok_tag.click()   #每个具体文件选择框点击确定
-                        print(000)
+                        print("step3 文件夹单个文件选择完毕")
 
                         time.sleep(3)
                         break
@@ -158,9 +158,9 @@ class SendLastPage:
 
 
         print("下面是不发送的----------")
-        if len(self.all_unsend_document) !=0:
-            for j in range(len(self.all_unsend_document)):
-                for i in range(self.all_unsend_documents_lenList[j]):
+        if len(self.all_unsend_documents) !=0:
+            for j in range(len(self.all_unsend_documents)):
+                for i in range(self.all_unsend_documents_len[j]):
             
                     attempts=0
                     while attempts<2:
@@ -168,14 +168,14 @@ class SendLastPage:
                         self.get_data()
                         print('j:',j)
                         print("i:",i)
-                        current_ducument=self.all_unsend_document[j][i]
+                        current_ducument=self.all_unsend_documents[j][i]
                         
                         
                         try:
                             current_ducument.click()  #单个文件夹点击展开
                                     ##全选框的处理 让任何文件都没有处于选中状态
                             time.sleep(1)
-                            print(888)
+                            print("step3单个文件夹定位完毕 且已点开")
                             
                             self.document_DynamicElements()
                             is_select = self.all_checkbox_input.is_selected()
@@ -187,7 +187,7 @@ class SendLastPage:
                                 self.all_checkbox_input.click()
                             time.sleep(1)
                             self.select_ok_tag.click()   #每个具体文件选择框点击确定
-                            print(000)
+                            print("step3 文件夹单个文件选择完毕")
 
                             time.sleep(3)
                             break
@@ -201,8 +201,8 @@ class SendLastPage:
 
         """
         #所有不发送文件保持未选中状态
-        if len(self.all_unsend_document) !=0:
-            for unsend_documents in self.all_unsend_document:
+        if len(self.all_unsend_documents) !=0:
+            for unsend_documents in self.all_unsend_documents:
                 for  unsend_document in unsend_documents:
                     attempts=0
                     while attempts<2:
@@ -242,18 +242,3 @@ class SendLastPage:
         print("完成")
         self.driver.get_screenshot_as_file('D:\\daima\\auto_syzljh\\photo\\send_before.png')
         time.sleep(2)
-        
-      
-
-
-        
-
-
-
-
-
-
-
-
-
-    

@@ -1,6 +1,8 @@
 #--coding:utf-8--
+import time
+
 from HomePage import HomePage
-import time 
+
 #登陆进来后的主页
 
 class HomePageLinkParameters:
