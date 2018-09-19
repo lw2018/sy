@@ -1,8 +1,10 @@
 #--coding:utf-8--
-from selenium import webdriver
-import time
 import json
+import time
 
+ import requests
+
+from selenium import webdriver
 
 #browser=Chrome()
 
@@ -39,4 +41,15 @@ class Loginpage:
         cook=self.browser.get_cookies()
         return cook
 
-
+    def handle_cook(self):
+        cook = self.get_cook()
+        for j in cook:
+        #根据cook名字只是筛选 united-id csrftoken sessionid 三个cook出来
+            if j.get("name")  in ["Hm_lvt_c7a77eff2e8cc0670fac6dec780dbd7a"\
+            ,"Hm_lpvt_c7a77eff2e8cc0670fac6dec780dbd7a"]:
+                cook.remove(j)
+        
+        jar=requests.cookies.RequestsCookieJar()
+        for i in range(3):
+            jar.set(cook[i]['name'],cook[i]['value'])
+        return  jar 
